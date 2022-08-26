@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div @mouseup="onMouseUp">
     <div >
       <draggable class="container"   v-model="fathers" group="children" @start="drag=true" @end="drag=false" >
       <father  ref="f" class="father" v-for="(father, index) in fathers" v-bind:key="father.id" :father="fathers[index]" 
-      @change="onFatherChange"  @childIconHover="onChildIconHover" @childDrop="onChildDrop" />
+      @change="onFatherChange"  @childIconHover="onChildIconHover" @childDrop="onChildDrop" @childDrag="onChildDrag" />
       </draggable>
     </div>
 
@@ -25,7 +25,7 @@ export default {
         {id: 3, children: [{txt: 'perro'}, {txt: 'loro'}, {txt: 'casa'}, {txt: 'auto'}]}
       ],
 
-      
+      isDraggingChildren: false      
 
     }
   },
@@ -49,12 +49,18 @@ export default {
       });
     },
     onChildIconHover(bool){
-        for (let index = 0; index < this.fathers.length; index++) {
-          this.$refs.f[index].AllowDragChildToggle(bool)
-        }
+        if(this.isDraggingChildren == false){
+          for (let index = 0; index < this.fathers.length; index++) {
+            this.$refs.f[index].AllowDragChildToggle(bool)
+          }
+          }
     },
     onChildDrop(){
+      this.isDraggingChildren = false; 
       this.onChildIconHover(false);
+    },
+    onChildDrag(){
+      this.isDraggingChildren = true;
     }
 
   }

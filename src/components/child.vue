@@ -15,7 +15,7 @@ export default {
             this.$emit('MoveIconHover', true);
         },
         onMoveIconMouseLeave(){
-            //this.$emit('MoveIconHover', false);
+            this.$emit('MoveIconHover', false);
         }
     }
 }

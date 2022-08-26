@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <draggable @change="onChange" :disabled="!AllowDraggingChildren" v-model="sorteableChildren" group="fathers" @start="drag = true" @end="onChildDrop" class="body">
+    <draggable @change="onChange" :disabled="!AllowDraggingChildren" v-model="sorteableChildren" group="fathers" @start="onChildDrag" @end="onChildDrop" class="body">
     <child v-for="(child, index) in sorteableChildren" v-bind:key="child.id" :name="sorteableChildren[index]" @MoveIconHover="onChildMoveIconHover" />
     </draggable>
     <h4 v-if="AllowDraggingChildren">dr</h4>
@@ -38,13 +38,15 @@ export default {
         },
         onChildMoveIconHover(bool){
             this.$emit('childIconHover', bool);
-            
         },
         AllowDragChildToggle(bool){
             this.AllowDraggingChildren = bool;
         },
         onChildDrop(){
           this.$emit('childDrop');
+        },
+        onChildDrag(){
+            this.$emit('childDrag');
         }
         
     }
