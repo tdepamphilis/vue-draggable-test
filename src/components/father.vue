@@ -1,8 +1,9 @@
 <template>
   <div class="body">
-    <draggable  @change="onChange"  v-model="sorteableChildren" group="people" @start="drag=true" @end="drag=false" class="body">
-    <child v-for="(child, index) in sorteableChildren" v-bind:key="child.id" :name="sorteableChildren[index]"  />
+    <draggable @change="onChange" :disabled="!AllowDraggingChildren" v-model="sorteableChildren" group="fathers" @start="drag = true" @end="drag = false" class="body">
+    <child v-for="(child, index) in sorteableChildren" v-bind:key="child.id" :name="sorteableChildren[index]" @MoveIconHover="onChildMoveIconHover" />
     </draggable>
+    <h4 v-if="AllowDraggingChildren">dr</h4>
   </div>
 </template>
 
@@ -15,26 +16,37 @@ export default {
     props: ['father'],
     data(){
         return{
-            sorteableChildren: []
+            sorteableChildren: [],
+            AllowDraggingChildren: false
         }
     },
     created(){
         this.actualizar()
+        console.log('crea')
     },
     methods:{
         actualizar(){
            this.sorteableChildren = this.father.children
         },
         onChange(){
-            
-
             let data = {
                 children: this.sorteableChildren,
                 id: this.father.id
             }
             console.log(this.sorteableChildren)
             this.$emit('change', data)
+        },
+        onChildMoveIconHover(bool){
+            this.$emit('childIconHover', bool);
+            
+        },
+        AllowDragChildToggle(bool){
+            this.AllowDraggingChildren = bool;
+        },
+        childDrop(){
+          this.$emit('childDrop');
         }
+        
     }
 }
 </script>
